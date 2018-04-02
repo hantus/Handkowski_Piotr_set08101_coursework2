@@ -1,0 +1,68 @@
+<% include ../partials/header %>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <p class="lead">Other posts by <%= post.author.username %></p>
+    <%  posts.forEach(function(entry){ %>
+    <%  if((entry.author.id.equals(post.author.id)) && entry.id !== post.id ){ %>
+        <p><%= entry.name %></p>
+    <%  } %>
+
+    <%  }); %>
+    </div>
+    <div class="col-md-9">
+      <div class="thumbnail">
+        <img class="img-responsive" src="<%= post.image %>" alt="">
+        <div class="caption">
+          <!-- <div class="caption-full"><h4 class="pull-right">$9.00/night</h4></div> -->
+          <h4><a href=""><%= post.name %></a></h4>
+          <p><%- post.content %></p>
+          <p><em>Submitted by <%= post.author.username %> (<%= post.datePosted.toDateString() %>)</em></p>
+          <% if(currentUser && (post.author.id).equals(currentUser.id)){%>
+            <a href="/posts/<%= post._id %>/edit" class="btn btn-warning">Edit Post</a>
+            <form id="displayInline" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          <% } %>
+
+        </div>
+
+      </div>
+      <div class="well">
+        <div class="text-right">
+          <a class="btn btn-success" href="/posts/<%= post._id %>/comments/new">Add New Comment</a>
+        </div>
+
+        <% post.comments.forEach(function(comment){ %>
+          <hr>
+          <div class="row">
+            <div class="col-md-12">
+              <strong><%= comment.author.username %></strong>
+              <span class="pull-right"><%= comment.dateComented.toDateString() %></span>
+              <p>
+                <%- comment.text %>
+              </p>
+              <% if(currentUser && (comment.author.id).equals(currentUser.id)){%>
+                <a href="/posts/<%= post._id %>/comments/<%= comment._id %>/edit" class="btn btn-primary btn-xs">Edit</a>
+                <form id="displayInline"  action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                  <button class="btn btn-danger btn-xs">Delete</button>
+                </form>
+
+              <% } %>
+
+            </div>
+          </div>
+
+        <% }); %>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+<% include ../partials/footer %>

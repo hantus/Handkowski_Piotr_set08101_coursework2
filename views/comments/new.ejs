@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+
+<div class="container">
+  <div class="row">
+    <h1 class="text-center">Add New Comment to <%= post.name %></h1>
+    <div style="width: 50%; margin: 25px auto;">
+      <form action="/posts/<%= post.id %>/comments" method="POST">
+        <div class="form-group">
+          <!-- <input class="form-control" type="text" name="comment[text]" placeholder="text"> -->
+          <textarea type="text" name="comment[text]" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-lg btn-primary btn-block">Add Comment</button>
+        </div>
+      </form>
+      <a href="/posts">Go Back</a>
+    </div>
+
+
+
+  </div>
+
+</div>
+<script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
+<script>
+CKEDITOR.replace( 'comment[text]' );
+</script>
+
+<% include ../partials/footer %>
