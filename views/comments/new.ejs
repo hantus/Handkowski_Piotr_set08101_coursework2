@@ -1,26 +1,26 @@
 <% include ../partials/header %>
 
-<div class="container">
+<div class="container formBox">
   <div class="row">
-    <h1 class="text-center">Add New Comment to <%= post.name %></h1>
-    <div style="width: 50%; margin: 25px auto;">
-      <form action="/posts/<%= post.id %>/comments" method="POST">
-        <div class="form-group">
-          <!-- <input class="form-control" type="text" name="comment[text]" placeholder="text"> -->
-          <textarea type="text" name="comment[text]" class="form-control"></textarea>
+    <div class="col-md-8 mx-auto">
+      <div class="card ">
+        <div class="card-header">
+          <h4>Add New Comment</h4>
+          <div class="card-body">
+            <form action="/posts/<%= post.id %>/comments" method="POST">
+              <div class="form-group">
+                <textarea type="text" name="comment[text]" class="form-control"></textarea>
+              </div>
+              <input type="submit" class="btn btn-primary btn-block" value="Add Comment">
+            </form>
+          </div>
         </div>
-        <div class="form-group">
-          <button class="btn btn-lg btn-primary btn-block">Add Comment</button>
-        </div>
-      </form>
-      <a href="/posts">Go Back</a>
+      </div>
     </div>
-
-
-
   </div>
-
 </div>
+
+
 <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
 <script>
 CKEDITOR.replace( 'comment[text]' );

@@ -1,9 +1,30 @@
 <% include partials/header %>
-<h1>Login!</h1>
-<form action="/login" method="POST">
-  <input type="text" name="username" placeholder="username">
-  <input type="password" name="password" placeholder="password">
-  <button>Login</button>
 
-</form>
+
+
+<div class="container formBox">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <div class="card ">
+        <div class="card-header">
+          <h4>Account Login</h4>
+          <div class="card-body">
+            <form action="/login" method="POST">
+              <div class="form-group">
+                <label for="email">Username</label>
+                <input class="form-control" type="text" name="username" >
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password">
+              </div>
+              <input type="submit" class="btn btn-primary btn-block" value="Login">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <% include partials/footer %>

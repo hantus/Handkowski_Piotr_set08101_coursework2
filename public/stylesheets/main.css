@@ -1,12 +1,25 @@
 
-.thumbnail img{
-  width: 100%;
-
+.myBackground{
+  background-image: url("./../resources/kelly-sikkema-450720-unsplash.jpg");
 }
-.thumbnail{
+
+
+
+.card{
   padding: 0;
+  display:flex;
+  flex-wrap: wrap;
+  height: 100%
 }
 
 #displayInline{
   display: inline;
+}
+
+.formBox{
+  margin-top: 80px;
+}
+
+.jumbotron{
+  margin-top: 20px;
 }
