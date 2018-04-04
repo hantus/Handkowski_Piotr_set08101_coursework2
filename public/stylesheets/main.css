@@ -1,16 +1,40 @@
 
 .myBackground{
-  background-image: url("./../resources/kelly-sikkema-450720-unsplash.jpg");
+  background-image: url("./../resources/nattu-adnan-328570-unsplash.jpg");
+  background-size: cover;
+  background-attachment: fixed;
 }
 
+.opaqueBack{
+  background-color:  rgba(255, 255, 255, 0.5);
+}
+
+.landingPos{
+  margin-top: 20%;
+}
+
+.logoMain{
+  font-size: 50px;
+  color: white;
+}
+.navColor{
+  background-color: rgba(38, 78, 142, 0.7);
+  border-bottom: solid 1px rgba(255,255,255, 0.1)
+  /* background-color: white; */
+}
 
 
 .card{
   padding: 0;
   display:flex;
   flex-wrap: wrap;
+  /* height: 100% */
+}
+
+.card-collection{
   height: 100%
 }
+
 
 #displayInline{
   display: inline;
@@ -20,6 +44,6 @@
   margin-top: 80px;
 }
 
-.jumbotron{
-  margin-top: 20px;
-}
+/* .jumbotron{
+  margin-top: 40px;
+} */

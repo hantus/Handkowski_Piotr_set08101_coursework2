@@ -3,38 +3,74 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-md-3">
-      <p class="lead">Other posts by <%= post.author.username %></p>
-    <%  posts.forEach(function(entry){ %>
-    <%  if((entry.author.id.equals(post.author.id)) && entry.id !== post.id ){ %>
-        <p><%= entry.name %></p>
-    <%  } %>
 
-    <%  }); %>
-    </div>
+
+
+
     <div class="col-md-9">
-      <div class="thumbnail">
-        <img class="img-responsive" src="<%= post.image %>" alt="">
-        <div class="caption">
-          <!-- <div class="caption-full"><h4 class="pull-right">$9.00/night</h4></div> -->
-          <h4><a href=""><%= post.name %></a></h4>
-          <p><%- post.content %></p>
-          <p><em>Submitted by <%= post.author.username %> (<%= post.datePosted.toDateString() %>)</em></p>
-          <% if(currentUser && (post.author.id).equals(currentUser.id)){%>
-            <a href="/posts/<%= post._id %>/edit" class="btn btn-warning">Edit Post</a>
-            <form id="displayInline" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
-              <button class="btn btn-danger">Delete</button>
-            </form>
-          <% } %>
-
-        </div>
-
+      <div class="card">
+        <img class="card-img-top" src="<%= post.image %>" alt="">
+      <div class="card-body">
+        <h1 class="card-title"><%= post.name %></h1>
+        <p class="card-text"><%- post.content %></p>
+        <p class="mt-5"><em>Added by <%= post.author.username %> (<%= post.datePosted.toDateString() %>)</em></p>
+        <% if(currentUser && (post.author.id).equals(currentUser.id)){%>
+          <a href="/posts/<%= post._id %>/edit" class="btn btn-warning">Edit Post</a>
+          <form id="displayInline" action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        <% } %>
       </div>
-      <div class="well">
-        <div class="text-right">
-          <a class="btn btn-success" href="/posts/<%= post._id %>/comments/new">Add New Comment</a>
-        </div>
+      </div>
 
+<!--
+
+      <div class="row" >
+        <% posts.forEach(function(post){ %>
+
+      <div class="containter mb-2 col-md-4 col-sm-6">
+        <div class="card" >
+          <% if(post.image != ""){%>
+            <img class="card-img-top" src="<%= post.image %>" alt="Card image cap">
+            <div class="card-body">
+              <h3 class="card-title"><%= post.name %></h3>
+              <% if(post.content.length > 100){ %>
+                <p class="card-text "><%- (post.content.substring(0, 100)).concat("...") %></p>
+              <% }else{ %>
+                <p class="card-text"><%- post.content.substring(0, 100) %></p>
+              <% } %>
+              <a href="/posts/<%= post._id %>" class="btn btn-primary">Read more</a>
+            </div>
+          <%}else{%>
+            <div class="card-body">
+              <h3 class="card-title"><%= post.name %></h3>
+              <% if(post.content.length > 200){ %>
+                <p class="card-text "><%- (post.content.substring(0, 400)).concat("...") %></p>
+              <% }else{ %>
+                <p class="card-text"><%- post.content.substring(0, 400) %></p>
+              <% } %>
+              <a href="/posts/<%= post._id %>" class="btn btn-primary">Read more</a>
+            </div>
+          <%}%>
+
+        </div>
+      </div>
+
+
+      <% }); %>
+    </div> -->
+
+
+
+
+
+
+
+
+      <div class="container mt-5 mb-5 border rounded border-info opaqueBack">
+        <div class="text-right">
+          <a class="btn btn-primary mt-3 mb-3" href="/posts/<%= post._id %>/comments/new">Add New Comment</a>
+        </div>
         <% post.comments.forEach(function(comment){ %>
           <hr>
           <div class="row">
@@ -45,18 +81,31 @@
                 <%- comment.text %>
               </p>
               <% if(currentUser && (comment.author.id).equals(currentUser.id)){%>
-                <a href="/posts/<%= post._id %>/comments/<%= comment._id %>/edit" class="btn btn-primary btn-xs">Edit</a>
+                <a href="/posts/<%= post._id %>/comments/<%= comment._id %>/edit" class="btn btn-warning btn-sm mb-3">Edit</a>
                 <form id="displayInline"  action="/posts/<%= post._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
-                  <button class="btn btn-danger btn-xs">Delete</button>
+                  <button class="btn btn-danger btn-sm mb-3">Delete</button>
                 </form>
-
               <% } %>
-
             </div>
           </div>
-
         <% }); %>
       </div>
+    </div>
+
+
+
+
+
+
+    <div class="col-md-3 text-white">
+      <p class="lead">Other posts by <%= post.author.username %>:</p>
+    <%  posts.forEach(function(entry){ %>
+    <%  if((entry.author.id.equals(post.author.id)) && entry.id !== post.id ){ %>
+
+        <p><a class="text-white" href="/posts/<%= entry.id %>"><%= entry.name %></a></p>
+    <%  } %>
+
+    <%  }); %>
     </div>
   </div>
 

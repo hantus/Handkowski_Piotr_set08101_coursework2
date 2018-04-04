@@ -48,6 +48,19 @@ app.get("/posts", function(req, res){
   });
 
 });
+
+// shows all posts of the currentUser
+app.get("/userPage", function(req, res){
+  Post.find({}, function(err, posts){
+    if(err){
+      console.log(err);
+    }else {
+      res.render("posts/user", {posts: posts, currentUser: req.user});
+    }
+  });
+});
+
+
 // NEW show form to create new post
 app.get("/posts/new", isLoggedIn, function(req, res){
   res.render("posts/new", {currentUser: req.user});
