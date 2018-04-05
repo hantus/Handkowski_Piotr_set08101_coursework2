@@ -13,7 +13,9 @@ var flash = require("connect-flash");
 app.set('port', (process.env.PORT || 5000));
 
 
-mongoose.connect("mongodb://localhost/blogging_app");
+mongoose.connect("mongodb://hantus:hantus666@ds137019.mlab.com:37019/blogapp");
+// mongoose.connect("mongodb://localhost/blogging_app");
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
