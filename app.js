@@ -8,7 +8,9 @@ var Comment = require("./models/comment");
 var passport = require("passport");
 var localStrategy = require("passport-local");
 var methodOverride = require("method-override");
+var flash = require("connect-flash");
 
+app.set('port', (process.env.PORT || 5000));
 
 
 mongoose.connect("mongodb://localhost/blogging_app");
@@ -16,6 +18,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
+app.use(flash());
 
 // PASSPORT CONFIGURATION
 
@@ -30,6 +33,12 @@ app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+
+// app.use(function(req, res, next){
+//   res.locals.currentUser = req.user;
+//   res.locals.message = req.flash("error");
+// });
 
 
 app.get("/", function(req, res){
@@ -257,6 +266,7 @@ function isLoggedIn(req, res, next){
   if(req.isAuthenticated()){
     return next();
   }
+
   res.redirect("/login");
 }
 
@@ -299,7 +309,10 @@ function checkCommentOwnership(req, res, next){
   }
 }
 
-
-app.listen(3000, function(){
-  console.log("Blog server has started");
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
+
+// app.listen(3000, function(){
+//   console.log("Blog server has started");
+// });
