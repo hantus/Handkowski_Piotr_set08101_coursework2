@@ -22,6 +22,8 @@ app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
 
+
+
 // PASSPORT CONFIGURATION
 
 app.use(require("express-session")({
@@ -37,14 +39,17 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
-// app.use(function(req, res, next){
-//   res.locals.currentUser = req.user;
-//   res.locals.message = req.flash("error");
-// });
+app.use(function(req, res, next){
+  // res.locals.currentUser = req.user;
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
+  res.locals.currentUser = req.user;
+  next();
+});
 
 
-app.get("/", function(req, res){
-  res.render("landing", {currentUser: req.user});
+app.get("/", function(req, res, next){
+  res.render("landing");
 
 });
 
@@ -54,7 +59,7 @@ app.get("/posts", function(req, res){
     if(err){
       console.log(err);
     }else {
-      res.render("posts/index" , {posts : posts, currentUser: req.user});
+      res.render("posts/index" , {posts : posts});
     }
   });
 
@@ -66,7 +71,7 @@ app.get("/userPage", function(req, res){
     if(err){
       console.log(err);
     }else {
-      res.render("posts/user", {posts: posts, currentUser: req.user});
+      res.render("posts/user", {posts: posts});
     }
   });
 });
@@ -74,7 +79,7 @@ app.get("/userPage", function(req, res){
 
 // NEW show form to create new post
 app.get("/posts/new", isLoggedIn, function(req, res){
-  res.render("posts/new", {currentUser: req.user});
+  res.render("posts/new");
 });
 
 
@@ -94,6 +99,7 @@ app.post("/posts", isLoggedIn, function(req, res){
     if(err){
       console.log(err);
     }else{
+      req.flas("success", "Your post has been added!");
       res.redirect("/posts" );
     }
   });
@@ -113,7 +119,7 @@ app.get("/posts/:id", function(req, res){
         if(err){
           console.log(err);
         }else{
-          res.render("posts/show", {post : foundPost, posts: posts, currentUser: req.user});
+          res.render("posts/show", {post : foundPost, posts: posts});
         }
       });
 
@@ -132,7 +138,7 @@ app.get("/posts/:id/comments/new", isLoggedIn, function(req, res){
     if(err){
       console.log(err);
     }else {
-      res.render("comments/new", {post: post, currentUser: req.user})
+      res.render("comments/new", {post: post})
     }
   });
 });
@@ -141,7 +147,7 @@ app.post("/posts/:id/comments", isLoggedIn, function(req, res){
   Post.findById(req.params.id, function(err, post){
     if(err){
       console.log(err);
-      res.redirect("/posts", {currentUser: req.user});
+      res.redirect("/posts");
     }else {
       Comment.create(req.body.comment, function(err, comment){
         if(err){
@@ -152,6 +158,7 @@ app.post("/posts/:id/comments", isLoggedIn, function(req, res){
           comment.save();
           post.comments.push(comment);
           post.save();
+          req.flash("success", "Your comment has been added!")
           res.redirect("/posts/"+ post._id);
         }
       });
@@ -162,7 +169,7 @@ app.post("/posts/:id/comments", isLoggedIn, function(req, res){
 // AUTHORISATION Routes
 
 app.get("/register", function(req, res){
-  res.render("register", {currentUser: req.user});
+  res.render("register");
 });
 
 
@@ -170,16 +177,18 @@ app.post("/register", function(req, res){
   User.register(new User({username: req.body.username}),req.body.password, function(err, user){
     if(err){
       console.log(err);
-      return res.render("register", {currentUser: req.user});
+      req.flash("error", err.message);
+      return res.redirect("register");
     }
     passport.authenticate("local")(req, res, function(){
+      req.flash("success", "Congratulations "+ req.user.username +", you have successfully registered on Bloggeroo!");
       res.redirect("/posts");
     });
   });
 });
 
 app.get("/login", function(req, res){
-  res.render("login", {currentUser: req.user});
+  res.render("login");
 });
 
 app.post("/login",passport.authenticate("local",{
@@ -190,14 +199,19 @@ app.post("/login",passport.authenticate("local",{
 });
 
 app.get("/logout", function(req, res){
+  var name = "";
+  if(req.user){
+    name = req.user.username;
+  }
   req.logout();
+  req.flash("success", "Goodbye "+ name);
   res.redirect("/posts");
 });
 
 // EDIT POST ROUTES
 app.get("/posts/:id/edit", checkPostOwnership, function(req, res){
   Post.findById(req.params.id, function(err, foundPost){
-    res.render("posts/edit", {post: foundPost, currentUser: req.user});
+    res.render("posts/edit", {post: foundPost});
     });
 });
 
@@ -206,6 +220,7 @@ app.put("/posts/:id", checkPostOwnership, function(req, res){
     if(err){
       res.redirect("/posts");
     }else{
+      req.flash("success", "Your post has been updated!")
       res.redirect("/posts/" + updatedPost._id)
     }
   });
@@ -219,6 +234,7 @@ app.delete("/posts/:id", checkPostOwnership, function(req, res){
     if(err){
       res.redirect("/posts");
     }else{
+      req.flash("success" , "Your post has been deleted!")
       res.redirect("/posts");
     }
   });
@@ -233,7 +249,7 @@ app.get("/posts/:id/comments/:comment_id/edit", checkCommentOwnership, function 
       console.log(err);
       res.redirect("back");
     }else{
-        res.render("comments/edit", {post_id: req.params.id, comment: foundComment, currentUser: req.user})
+        res.render("comments/edit", {post_id: req.params.id, comment: foundComment})
     }
   });
 });
@@ -243,7 +259,7 @@ app.put("/posts/:id/comments/:comment_id", checkCommentOwnership, function(req, 
     if(err){
       res.redirect("back");
     }else{
-
+      req.flash("success", "Your commend has been updated!")
       res.redirect("/posts/"+req.params.id);
     }
   });
@@ -268,7 +284,7 @@ function isLoggedIn(req, res, next){
   if(req.isAuthenticated()){
     return next();
   }
-
+  req.flash("error", "Please Login First!");
   res.redirect("/login");
 }
 
