@@ -3,6 +3,7 @@
   background-image: url("./../resources/nattu-adnan-328570-unsplash.jpg");
   background-size: cover;
   background-attachment: fixed;
+  height: 100%;
 }
 
 .opaqueBack{
