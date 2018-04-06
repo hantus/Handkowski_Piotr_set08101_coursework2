@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var passportLocalMongoose = require("passport-local-mongoose");
 
+// DATA STRUCTURE FOR USER
 var UserSchema = new mongoose.Schema({
   username: String,
   password: String

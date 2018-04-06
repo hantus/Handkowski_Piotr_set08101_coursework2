@@ -3,10 +3,6 @@
 
 <div class="container">
   <div class="row">
-
-
-
-
     <div class="col-md-9">
       <div class="card">
         <img class="card-img-top" src="<%= post.image %>" alt="">
@@ -22,51 +18,6 @@
         <% } %>
       </div>
       </div>
-
-<!--
-
-      <div class="row" >
-        <% posts.forEach(function(post){ %>
-
-      <div class="containter mb-2 col-md-4 col-sm-6">
-        <div class="card" >
-          <% if(post.image != ""){%>
-            <img class="card-img-top" src="<%= post.image %>" alt="Card image cap">
-            <div class="card-body">
-              <h3 class="card-title"><%= post.name %></h3>
-              <% if(post.content.length > 100){ %>
-                <p class="card-text "><%- (post.content.substring(0, 100)).concat("...") %></p>
-              <% }else{ %>
-                <p class="card-text"><%- post.content.substring(0, 100) %></p>
-              <% } %>
-              <a href="/posts/<%= post._id %>" class="btn btn-primary">Read more</a>
-            </div>
-          <%}else{%>
-            <div class="card-body">
-              <h3 class="card-title"><%= post.name %></h3>
-              <% if(post.content.length > 200){ %>
-                <p class="card-text "><%- (post.content.substring(0, 400)).concat("...") %></p>
-              <% }else{ %>
-                <p class="card-text"><%- post.content.substring(0, 400) %></p>
-              <% } %>
-              <a href="/posts/<%= post._id %>" class="btn btn-primary">Read more</a>
-            </div>
-          <%}%>
-
-        </div>
-      </div>
-
-
-      <% }); %>
-    </div> -->
-
-
-
-
-
-
-
-
       <div class="container mt-5 mb-5 border rounded border-info opaqueBack">
         <div class="text-right">
           <a class="btn btn-primary mt-3 mb-3" href="/posts/<%= post._id %>/comments/new">Add New Comment</a>
@@ -92,26 +43,15 @@
       </div>
     </div>
 
-
-
-
-
-
     <div class="col-md-3 text-white">
       <p class="lead">Other posts by <%= post.author.username %>:</p>
-    <%  posts.forEach(function(entry){ %>
-    <%  if((entry.author.id.equals(post.author.id)) && entry.id !== post.id ){ %>
-
-        <p><a class="text-white" href="/posts/<%= entry.id %>"><%= entry.name %></a></p>
-    <%  } %>
-
-    <%  }); %>
+      <%  posts.forEach(function(entry){ %>
+        <%  if((entry.author.id.equals(post.author.id)) && entry.id !== post.id ){ %>
+          <p><a class="text-white" href="/posts/<%= entry.id %>"><%= entry.name %></a></p>
+        <%  } %>
+      <%  }); %>
     </div>
   </div>
-
 </div>
-
-
-
 
 <% include ../partials/footer %>

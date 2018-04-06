@@ -6,6 +6,7 @@
   height: 100%;
 }
 
+
 .opaqueBack{
   background-color:  rgba(255, 255, 255, 0.5);
 }
@@ -18,11 +19,11 @@
   font-size: 50px;
   color: white;
 }
+
+
 .navColor{
-  /* background-color: rgba(38, 78, 142, 0.6); */
   background-color: rgba(9, 124, 225, 1);
   border-bottom: solid 1px rgba(255,255,255, 0.1)
-  /* background-color: white; */
 }
 
 
@@ -32,7 +33,7 @@
   padding: 0;
   display:flex;
   flex-wrap: wrap;
-  /* height: 100% */
+
 }
 
 .card-collection{
@@ -47,7 +48,3 @@
 .formBox{
   margin-top: 80px;
 }
-
-/* .jumbotron{
-  margin-top: 40px;
-} */

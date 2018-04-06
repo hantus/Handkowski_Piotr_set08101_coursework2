@@ -1,5 +1,6 @@
 var mongoose = require("mongoose");
 
+// DATA STRUCTURE FOR COMMENTS
 var commentSechema = new mongoose.Schema({
   text: String,
   dateComented: {type: Date, default: Date.now()},

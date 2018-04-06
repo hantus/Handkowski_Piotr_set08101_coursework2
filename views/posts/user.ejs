@@ -1,67 +1,46 @@
 <% include ../partials/header %>
 
 <div class="container">
-
   <div class="jumbotron opaqueBack">
     <div class="container">
       <h1 class="display-4">Welcome to Bloggeroo <%=currentUser.username %>!</h1>
       <p class="lead">Here you can see all your posts. You can add a new one, edit or remove your existing posts.</p>
       <a class="btn btn-primary btn-lg" href="/posts/new">Add New Post</a>
-      <p>
-
-      </p>
     </div>
   </div>
 
-
   <div class="row" >
     <% posts.forEach(function(post){ %>
-
-
-    <% if((post.author.id).equals(currentUser.id)){ %>
-      <div class="containter mb-2 col-md-4 col-sm-6 mt-5">
-      <div class="card card-collection" >
-        <% if(post.image != ""){%>
-          <img class="card-img-top" src="<%= post.image %>" alt="Card image cap">
-          <div class="card-body">
-            <h3 class="card-title"><%= post.name %></h3>
-            <% if(post.content.length > 100){ %>
-              <p class="card-text "><%- (post.content.substring(0, 100)).concat("...") %></p>
+      <% if((post.author.id).equals(currentUser.id)){ %>
+        <div class="containter mb-2 col-md-4 col-sm-6 mt-5">
+          <div class="card card-collection" >
+            <% if(post.image != ""){%>
+              <img class="card-img-top" src="<%= post.image %>" alt="Card image cap">
+              <div class="card-body">
+                <h3 class="card-title"><%= post.name %></h3>
+                <% if(post.content.length > 100){ %>
+                  <p class="card-text "><%- (post.content.substring(0, 100)).concat("...") %></p>
+                <% }else{ %>
+                  <p class="card-text"><%- post.content.substring(0, 100) %></p>
+                <% } %>
+                <a href="/posts/<%= post._id %>" class="btn btn-primary">Read more</a>
+              </div>
             <% }else{ %>
-              <p class="card-text"><%- post.content.substring(0, 100) %></p>
+              <div class="card-body">
+                <h3 class="card-title"><%= post.name %></h3>
+                <% if(post.content.length > 200){ %>
+                  <p class="card-text "><%- (post.content.substring(0, 400)).concat("...") %></p>
+                <% }else{ %>
+                  <p class="card-text"><%- post.content.substring(0, 400) %></p>
+                <% } %>
+                <a href="/posts/<%= post._id %>" class="btn btn-primary">Read more</a>
+              </div>
             <% } %>
-            <a href="/posts/<%= post._id %>" class="btn btn-primary">Read more</a>
           </div>
-        <%}else{%>
-          <div class="card-body">
-            <h3 class="card-title"><%= post.name %></h3>
-            <% if(post.content.length > 200){ %>
-              <p class="card-text "><%- (post.content.substring(0, 400)).concat("...") %></p>
-            <% }else{ %>
-              <p class="card-text"><%- post.content.substring(0, 400) %></p>
-            <% } %>
-            <a href="/posts/<%= post._id %>" class="btn btn-primary">Read more</a>
-          </div>
-        <%}%>
-      </div>
-      </div>
-    <% } %>
-
-
-
-
-
-  <% }); %>
+        </div>
+      <% } %>
+    <% }); %>
+  </div>
 </div>
-
-
-
-
-</div>
-
-
-
-
-
 
 <% include ../partials/footer %>

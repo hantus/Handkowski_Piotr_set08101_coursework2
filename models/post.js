@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 
-
+// DATA STRUCTURE FOR POSTS
 var postSechema = new mongoose.Schema({
   name: String,
   image: String,

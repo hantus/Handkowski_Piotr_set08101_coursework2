@@ -47,13 +47,12 @@ app.use(function(req, res, next){
   next();
 });
 
-
+// LANDING PAGE ROUTE
 app.get("/", function(req, res, next){
   res.render("landing");
-
 });
 
-// INDEX show all posts
+// INDEX SHOWS ALL POSTS
 app.get("/posts", function(req, res){
   Post.find({}, function(err, posts){
     if(err){
@@ -62,10 +61,9 @@ app.get("/posts", function(req, res){
       res.render("posts/index" , {posts : posts});
     }
   });
-
 });
 
-// shows all posts of the currentUser
+// SHOWS ALL POSTS OF LOGGED IN USER
 app.get("/userPage", function(req, res){
   Post.find({}, function(err, posts){
     if(err){
@@ -77,16 +75,14 @@ app.get("/userPage", function(req, res){
 });
 
 
-// NEW show form to create new post
+// NEW - SHOWS A FORM TO CREATE A NEW POST
 app.get("/posts/new", isLoggedIn, function(req, res){
   res.render("posts/new");
 });
 
 
-// CREATE add new post
+// CREATE- ADDS A NEW POST
 app.post("/posts", isLoggedIn, function(req, res){
-
-  //get data from form and add to campgrounds array
   var name = req.body.name;
   var image = req.body.image;
   var content = req.body.content;
@@ -94,7 +90,6 @@ app.post("/posts", isLoggedIn, function(req, res){
     id: req.user._id,
     username: req.user.username
   }
-
   Post.create({name:name, image: image, content: content, author: author}, function(err, post){
     if(err){
       console.log(err);
@@ -103,13 +98,10 @@ app.post("/posts", isLoggedIn, function(req, res){
       res.redirect("/posts" );
     }
   });
-  // redirect back to posts page
-
 });
 
-// SHOW - shows more info about the post
+// SHOW - SHOWS MORE INFOR ABOUT A POST
 app.get("/posts/:id", function(req, res){
-  // find post with provided id
   var id = req.params.id;
   Post.findById(id).populate("comments").exec(function(err, foundPost){
     if(err){
@@ -122,17 +114,15 @@ app.get("/posts/:id", function(req, res){
           res.render("posts/show", {post : foundPost, posts: posts});
         }
       });
-
     }
   });
-
 });
 
 //==================================
 // COMMENTS ROUTES
 //==================================
 
-
+// SHOWS A FORM TO CREATE A NEW COMMENT
 app.get("/posts/:id/comments/new", isLoggedIn, function(req, res){
   Post.findById(req.params.id, function(err, post){
     if(err){
@@ -143,6 +133,7 @@ app.get("/posts/:id/comments/new", isLoggedIn, function(req, res){
   });
 });
 
+// ADDS A NEW COMMENT
 app.post("/posts/:id/comments", isLoggedIn, function(req, res){
   Post.findById(req.params.id, function(err, post){
     if(err){
@@ -166,17 +157,17 @@ app.post("/posts/:id/comments", isLoggedIn, function(req, res){
   });
 });
 
-// AUTHORISATION Routes
+// AUTHORISATION ROUTES
 
+// SHOWS A FORM TO REGISTER A NEW USER
 app.get("/register", function(req, res){
   res.render("register");
 });
 
-
+// REGISTERS A NEW USER
 app.post("/register", function(req, res){
   User.register(new User({username: req.body.username}),req.body.password, function(err, user){
     if(err){
-      console.log(err);
       req.flash("error", err.message);
       return res.redirect("register");
     }
@@ -187,17 +178,19 @@ app.post("/register", function(req, res){
   });
 });
 
+// SHOWS A FORM TO LOGIN
 app.get("/login", function(req, res){
   res.render("login");
 });
 
+// LOGS IN A USER
 app.post("/login",passport.authenticate("local",{
   successRedirect: "/posts",
   failureRedirect: "/login"
-}), function(req, res){
-
+  }), function(req, res){
 });
 
+// LOGS OUT A USER
 app.get("/logout", function(req, res){
   var name = "";
   if(req.user){
@@ -209,12 +202,15 @@ app.get("/logout", function(req, res){
 });
 
 // EDIT POST ROUTES
+
+//GETS A FORM TO EDIT A POST
 app.get("/posts/:id/edit", checkPostOwnership, function(req, res){
   Post.findById(req.params.id, function(err, foundPost){
     res.render("posts/edit", {post: foundPost});
     });
 });
 
+// EDITS THE POST
 app.put("/posts/:id", checkPostOwnership, function(req, res){
   Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, updatedPost){
     if(err){
@@ -229,6 +225,8 @@ app.put("/posts/:id", checkPostOwnership, function(req, res){
 
 // DESTROY POST ROUTE
 
+
+// DELETS A POST
 app.delete("/posts/:id", checkPostOwnership, function(req, res){
   Post.findByIdAndRemove(req.params.id, function(err){
     if(err){
@@ -243,6 +241,7 @@ app.delete("/posts/:id", checkPostOwnership, function(req, res){
 
 // EDIT COMMENTS Routes
 
+// SHOWS A FORM TO EDIT A COMMENT
 app.get("/posts/:id/comments/:comment_id/edit", checkCommentOwnership, function (req, res){
   Comment.findById(req.params.comment_id, function(err, foundComment){
     if(err){
@@ -254,6 +253,8 @@ app.get("/posts/:id/comments/:comment_id/edit", checkCommentOwnership, function 
   });
 });
 
+
+//EDITS THE COMMENT
 app.put("/posts/:id/comments/:comment_id", checkCommentOwnership, function(req, res){
   Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
     if(err){
@@ -266,6 +267,8 @@ app.put("/posts/:id/comments/:comment_id", checkCommentOwnership, function(req, 
 });
 
 //COMMENT DESTROY ROUTE
+
+// DELETES A COMMENT
 app.delete("/posts/:id/comments/:comment_id", function(req, res){
   Comment.findByIdAndRemove(req.params.comment_id, function(err){
     if(err){
@@ -280,13 +283,12 @@ app.delete("/posts/:id/comments/:comment_id", function(req, res){
 
 
 // DEFAULT ROUTE FOR ALL OTHER CASES
-
 app.get("*", function(req, res){
   res.render("unspecified");
 });
 
 
-
+// MIDDLEWARE - CHECKS IF USER IS LOGGED IN
 function isLoggedIn(req, res, next){
   if(req.isAuthenticated()){
     return next();
@@ -295,6 +297,7 @@ function isLoggedIn(req, res, next){
   res.redirect("/login");
 }
 
+// MIDDLEWARE - CHECKS IF LOGGED IN USER OWNS THE POST
 function checkPostOwnership(req, res, next){
   if(req.isAuthenticated()){
     Post.findById(req.params.id, function(err, foundPost){
@@ -314,7 +317,7 @@ function checkPostOwnership(req, res, next){
   }
 }
 
-
+// MIDDLEWARE - CHECKS IF LOGGED IN USER OWNS THE COMMENT
 function checkCommentOwnership(req, res, next){
   if(req.isAuthenticated()){
     Comment.findById(req.params.comment_id, function(err, foundComment){
@@ -334,10 +337,8 @@ function checkCommentOwnership(req, res, next){
   }
 }
 
+
+// PORT SET UP
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
-
-// app.listen(3000, function(){
-//   console.log("Blog server has started");
-// });

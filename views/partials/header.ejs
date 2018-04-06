@@ -9,50 +9,50 @@
   <body class="myBackground">
 
 
-<nav class="navbar navbar-expand-lg navbar-dark navColor mb-3">
-  <a class="navbar-brand" href="/">Bloggeroo</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+  <nav class="navbar navbar-expand-lg navbar-dark navColor mb-3">
+    <a class="navbar-brand" href="/">Bloggeroo</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/posts">Posts <span class="sr-only">(current)</span></a>
-      </li>
-      <% if(currentUser){ %>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/userPage">My Posts</a>
+          <a class="nav-link" href="/posts">Posts <span class="sr-only">(current)</span></a>
         </li>
-      <% } %>
-    </ul>
-    <ul class="navbar-nav ml-auto">
-    <% if(!currentUser){%>
-      <li class="nav-item">
-        <a class="nav-link" href="/login"><i class="fa fa-user"></i> Login</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/register"><i class="fa fa-user-plus"></i> Sign Up</a>
-      </li>
-    <%  }else{ %>
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fa fa-user"></i> Signed in as <%= currentUser.username %></a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link" href="/logout"><i class="fa fa-user-times"></i> Logout</a>
-      </li>
-    <%  }%>
-    </ul>
-  </div>
-</nav>
+        <% if(currentUser){ %>
+          <li class="nav-item">
+            <a class="nav-link" href="/userPage">My Posts</a>
+          </li>
+        <% } %>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <% if(!currentUser){%>
+          <li class="nav-item">
+            <a class="nav-link" href="/login"><i class="fa fa-user"></i> Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/register"><i class="fa fa-user-plus"></i> Sign Up</a>
+          </li>
+        <%  }else{ %>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="fa fa-user"></i> Signed in as <%= currentUser.username %></a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="/logout"><i class="fa fa-user-times"></i> Logout</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </nav>
 
-<% if(error != ""){ %>
-  <div class="alert alert-danger container text-center" role="alert">
-    <%= error %>
-  </div>
-<% } %>
-<% if(success != ""){ %>
-  <div class="alert alert-primary container text-center" role="alert">
-    <%= success %>
-  </div>
-<% } %>
+  <% if(error != ""){ %>
+    <div class="alert alert-danger container text-center" role="alert">
+      <%= error %>
+    </div>
+  <% } %>
+  <% if(success != ""){ %>
+    <div class="alert alert-primary container text-center" role="alert">
+      <%= success %>
+    </div>
+  <% } %>
