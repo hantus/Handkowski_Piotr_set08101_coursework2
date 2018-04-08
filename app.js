@@ -207,6 +207,9 @@ app.get("/logout", function(req, res){
 //GETS A FORM TO EDIT A POST
 app.get("/posts/:id/edit", checkPostOwnership, function(req, res){
   Post.findById(req.params.id, function(err, foundPost){
+    if(err){
+      console.log(err);
+    }
     res.render("posts/edit", {post: foundPost});
     });
 });
