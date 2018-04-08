@@ -13,7 +13,7 @@ var flash = require("connect-flash");
 
 
 //SETTING CONNECTIONS
-mongoose.connect("mongodb://hantus:hantus666@ds137019.mlab.com:37019/blogapp");
+mongoose.connect("mongodb://user:user123@ds137019.mlab.com:37019/blogapp");
 
 // APP SETTINGS
 app.set('port', (process.env.PORT || 5000));
@@ -184,11 +184,12 @@ app.get("/login", function(req, res){
 });
 
 // LOGS IN A USER
-app.post("/login",passport.authenticate("local",{
-  successRedirect: "/posts",
-  failureRedirect: "/login"
-  }), function(req, res){
-});
+app.post('/login',
+  passport.authenticate('local', { failureRedirect: '/login' }),
+  function(req, res) {
+    req.flash("success", "Welcome back "+ req.user.username);
+    res.redirect('/posts');
+  });
 
 // LOGS OUT A USER
 app.get("/logout", function(req, res){
