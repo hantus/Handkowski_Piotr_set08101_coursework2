@@ -94,7 +94,7 @@ app.post("/posts", isLoggedIn, function(req, res){
     if(err){
       console.log(err);
     }else{
-      req.flas("success", "Your post has been added!");
+      req.flash("success", "Your post has been added!");
       res.redirect("/posts" );
     }
   });
